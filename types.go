@@ -97,6 +97,15 @@ type CodeSetting struct {
 	PreviewFormat string `json:"preview_format"`
 }
 
+// CreateTokenResponse https://www.wolai.com/wolai/qbodEzSpBvorokpvYHGAo3
+type CreateTokenResponse struct {
+	AppToken   string `json:"app_token"`
+	AppId      string `json:"app_id"`
+	CreateTime int    `json:"create_time"`
+	ExpireTime int    `json:"expire_time"`
+	UpdateTime int    `json:"update_time"`
+}
+
 // LinkCover https://www.wolai.com/wolai/5PCC5XwEgPgBQ9ttTs9eLn
 type LinkCover struct {
 	Type string `json:"type"`

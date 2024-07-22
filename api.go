@@ -159,4 +159,26 @@ func (api *WolaiAPI) CreateBlocks(parentId string, blocks []Block) ([]string, er
 	return *respData, nil
 }
 
+func CreateToken(appId, appSecret string) (*CreateTokenResponse, error) {
+	resp, err := makeRequest(
+		"/v1/token",
+		http.MethodPost,
+		"",
+		nil,
+		map[string]string{
+			"appId":     appId,
+			"appSecret": appSecret,
+		},
+		&CreateTokenResponse{},
+	)
+
+	if err != nil {
+		return nil, err
+	}
+
+	respData := resp.Data.(*CreateTokenResponse)
+
+	return respData, nil
+}
+
 // TODO: helper functions for creating blocks
