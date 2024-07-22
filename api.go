@@ -87,7 +87,7 @@ func (api *WolaiAPI) MakeRequest(path string, method string, body any, dataType 
 		return nil, err
 	}
 
-	if resp.StatusCode != http.StatusOK {
+	if resp.StatusCode >= http.StatusBadRequest {
 		return respStruct, errors.New(respStruct.Message)
 	}
 
@@ -116,3 +116,20 @@ func (api *WolaiAPI) GetBlockChildren(blockId string) ([]BlockApiResponse, error
 
 	return *respData, nil
 }
+
+// CreateBlocks https://www.wolai.com/wolai/oyKuZbAmufkA3r7ocrBxW2
+func (api *WolaiAPI) CreateBlocks(parentId string, blocks []Block) ([]string, error) {
+	resp, err := api.MakeRequest("/v1/blocks", http.MethodPost, map[string]any{
+		"parent_id": parentId,
+		"blocks":    blocks,
+	}, &[]string{})
+	if err != nil {
+		return []string{}, err
+	}
+
+	respData := resp.Data.(*[]string)
+
+	return *respData, nil
+}
+
+// TODO: helper functions for creating blocks

@@ -27,28 +27,9 @@ type TextAlign string
 // TodoListProStatus https://www.wolai.com/wolai/pGch2SkbNjy3cM2Dk8bzxB
 type TodoListProStatus string
 
-// BlockApiResponse The field `data` in return type of `/blocks/{id}`.
-//
-// PageID `nil` if the page is top level page in workspace, ParentType will be `work_space`
-type BlockApiResponse struct {
-	ID      string     `json:"id"`
-	Type    BlockTypes `json:"type"`
-	Content []struct {
-		Title string `json:"title"`
-		Type  string `json:"type"`
-	} `json:"content"`
-	ParentID   string     `json:"parent_id"`
-	PageID     *string    `json:"page_id"`
-	ParentType BlockTypes `json:"parent_type"`
-	Children   struct {
-		Ids    []string `json:"ids"`
-		APIUrl *string  `json:"api_url"`
-	} `json:"children"`
-	Version         int               `json:"version"`
-	CreatedBy       string            `json:"created_by"`
-	CreatedAt       int64             `json:"created_at"`
-	EditedBy        string            `json:"edited_by"`
-	EditedAt        int64             `json:"edited_at"`
+type Block struct {
+	Type            BlockTypes        `json:"type"`
+	Content         []RichText        `json:"content"`
 	BlockFrontColor *BlockFrontColors `json:"block_front_color"`
 	BlockBackColor  *BlockBackColors  `json:"block_back_color"`
 	TextAlignment   *TextAlign        `json:"text_alignment"`
@@ -86,6 +67,26 @@ type BlockApiResponse struct {
 	// type "embed"
 	OriginalLink *string `json:"original_link"`
 	EmbedLink    *string `json:"embed_link"`
+}
+
+// BlockApiResponse The field `data` in return type of `/blocks/{id}`.
+//
+// PageID `nil` if the page is top level page in workspace, ParentType will be `work_space`
+type BlockApiResponse struct {
+	Block
+	ID         string     `json:"id"`
+	ParentID   string     `json:"parent_id"`
+	PageID     *string    `json:"page_id"`
+	ParentType BlockTypes `json:"parent_type"`
+	Children   struct {
+		Ids    []string `json:"ids"`
+		APIUrl *string  `json:"api_url"`
+	} `json:"children"`
+	Version   int    `json:"version"`
+	CreatedBy string `json:"created_by"`
+	CreatedAt int64  `json:"created_at"`
+	EditedBy  string `json:"edited_by"`
+	EditedAt  int64  `json:"edited_at"`
 }
 
 // CodeSetting https://www.wolai.com/wolai/uyEE87wHMaSDpNUUSgKvhW
