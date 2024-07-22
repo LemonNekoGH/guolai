@@ -1,4 +1,4 @@
-package wolaiapi
+package guolai
 
 import (
 	"bytes"
@@ -6,7 +6,6 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"net/url"
 )
 
 // HTTPClient is the type needed for the bot to perform HTTP requests.
@@ -30,39 +29,46 @@ func NewWithClient(token string, httpClient HTTPClient) *WolaiAPI {
 	}
 }
 
-// MakeRequest create and make a request to wolai api.
+// makeRequest create and make a request to wolai api.
 //
 // Params:
 // - path: should start with `/`
-func (api *WolaiAPI) MakeRequest(path string, method string, body any, dataType any) (*WolaiResponse, error) {
-	reqUrl, err := url.Parse("https://openapi.wolai.com" + path)
-	if err != nil {
-		return nil, err
+func makeRequest(
+	path string,
+	method string,
+	token string,
+	httpClient HTTPClient,
+	body any,
+	dataType any,
+) (*WolaiResponse, error) {
+	client := httpClient
+	if client == nil {
+		client = http.DefaultClient
 	}
 
-	var bodyJson []byte
-	var bodyReader io.ReadCloser
+	var (
+		bodyJson []byte
+		err      error
+	)
 	if body != nil {
 		bodyJson, err = json.Marshal(body)
 		if err != nil {
 			return nil, err
 		}
-
-		bodyReader = io.NopCloser(bytes.NewReader(bodyJson))
 	}
 
-	req := &http.Request{
-		Method: method,
-		URL:    reqUrl,
-		Body:   bodyReader,
-		Header: map[string][]string{
-			"Accept":        {"application/json"},
-			"Authorization": {api.Token},
-			"Content-Type":  {"application/json"},
-		},
+	req, err := http.NewRequest(method, "https://openapi.wolai.com"+path, bytes.NewReader(bodyJson))
+	if err != nil {
+		return nil, err
 	}
 
-	resp, err := api.HTTPClient.Do(req)
+	req.Header.Set("Content-Type", "application/json")
+	req.Header.Set("Accept", "application/json")
+	if token != "" {
+		req.Header.Set("Authorization", token)
+	}
+
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -96,7 +102,14 @@ func (api *WolaiAPI) MakeRequest(path string, method string, body any, dataType 
 
 // GetBlocks https://www.wolai.com/wolai/htv4BHWQwiqfqx6PHQUrRn
 func (api *WolaiAPI) GetBlocks(blockId string) (*BlockApiResponse, error) {
-	resp, err := api.MakeRequest("/v1/blocks/"+blockId, http.MethodGet, nil, &BlockApiResponse{})
+	resp, err := makeRequest(
+		"/v1/blocks/"+blockId,
+		http.MethodGet,
+		api.Token,
+		api.HTTPClient,
+		nil,
+		&BlockApiResponse{},
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -107,7 +120,14 @@ func (api *WolaiAPI) GetBlocks(blockId string) (*BlockApiResponse, error) {
 }
 
 func (api *WolaiAPI) GetBlockChildren(blockId string) ([]BlockApiResponse, error) {
-	resp, err := api.MakeRequest("/v1/blocks/"+blockId+"/children", http.MethodGet, nil, &[]BlockApiResponse{})
+	resp, err := makeRequest(
+		"/v1/blocks/"+blockId+"/children",
+		http.MethodGet,
+		api.Token,
+		api.HTTPClient,
+		nil,
+		&[]BlockApiResponse{},
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -119,10 +139,17 @@ func (api *WolaiAPI) GetBlockChildren(blockId string) ([]BlockApiResponse, error
 
 // CreateBlocks https://www.wolai.com/wolai/oyKuZbAmufkA3r7ocrBxW2
 func (api *WolaiAPI) CreateBlocks(parentId string, blocks []Block) ([]string, error) {
-	resp, err := api.MakeRequest("/v1/blocks", http.MethodPost, map[string]any{
-		"parent_id": parentId,
-		"blocks":    blocks,
-	}, &[]string{})
+	resp, err := makeRequest(
+		"/v1/blocks",
+		http.MethodPost,
+		api.Token,
+		api.HTTPClient,
+		map[string]any{
+			"parent_id": parentId,
+			"blocks":    blocks,
+		},
+		&[]string{},
+	)
 	if err != nil {
 		return []string{}, err
 	}

@@ -1,4 +1,4 @@
-package wolaiapi
+package guolai
 
 // CodeLanguage https://www.wolai.com/wolai/ikDbLea69NRHyTGEsgZwvs
 type CodeLanguage string
