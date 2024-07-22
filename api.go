@@ -105,3 +105,14 @@ func (api *WolaiAPI) GetBlocks(blockId string) (*BlockApiResponse, error) {
 
 	return respData, nil
 }
+
+func (api *WolaiAPI) GetBlockChildren(blockId string) ([]BlockApiResponse, error) {
+	resp, err := api.MakeRequest("/v1/blocks/"+blockId+"/children", http.MethodGet, nil, &[]BlockApiResponse{})
+	if err != nil {
+		return nil, err
+	}
+
+	respData := resp.Data.(*[]BlockApiResponse)
+
+	return *respData, nil
+}
