@@ -159,6 +159,44 @@ func (api *WolaiAPI) CreateBlocks(parentId string, blocks []Block) ([]string, er
 	return *respData, nil
 }
 
+func (api *WolaiAPI) GetDatabase(databaseId string) (*GetDatabaseResponse, error) {
+	resp, err := makeRequest(
+		"/v1/databases/"+databaseId,
+		http.MethodGet,
+		api.Token,
+		api.HTTPClient,
+		nil,
+		&GetDatabaseResponse{},
+	)
+	if err != nil {
+		return nil, err
+	}
+
+	respData := resp.Data.(*GetDatabaseResponse)
+
+	return respData, nil
+}
+
+func (api *WolaiAPI) CreateDatabaseRow(databaseId string, rows []CreateDatabaseRowDta) ([]string, error) {
+	resp, err := makeRequest(
+		"/v1/databases/"+databaseId+"/rows",
+		http.MethodPost,
+		api.Token,
+		api.HTTPClient,
+		map[string][]CreateDatabaseRowDta{
+			"rows": rows,
+		},
+		&[]string{},
+	)
+	if err != nil {
+		return []string{}, err
+	}
+
+	respData := resp.Data.(*[]string)
+
+	return *respData, nil
+}
+
 func CreateToken(appId, appSecret string) (*CreateTokenResponse, error) {
 	resp, err := makeRequest(
 		"/v1/token",

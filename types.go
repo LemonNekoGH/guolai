@@ -3,6 +3,9 @@ package guolai
 // CodeLanguage https://www.wolai.com/wolai/ikDbLea69NRHyTGEsgZwvs
 type CodeLanguage string
 
+// CreateDatabaseRowDta https://www.wolai.com/wolai/iamFc9qQrKuokBav4mwFv8
+type CreateDatabaseRowDta map[string]any
+
 // BlockAlign https://www.wolai.com/wolai/cxwoKscjb7CZvW3gH8niyr
 type BlockAlign string
 
@@ -20,6 +23,12 @@ type HeadingLevel int
 
 // InlineTitleType https://www.wolai.com/wolai/wC59T4LoA7zHo1jseXpAWX
 type InlineTitleType string
+
+// NumberFormats https://www.wolai.com/wolai/rnRRy76Zc2NeZzRSo6ChPw
+type NumberFormats string
+
+// PropertyType https://www.wolai.com/wolai/r5r6paCMdyvexfMNLiamTn
+type PropertyType string
 
 // TextAlign https://www.wolai.com/wolai/wsnMsouhzaSANLwCJcEPYr
 type TextAlign string
@@ -106,6 +115,18 @@ type CreateTokenResponse struct {
 	UpdateTime int    `json:"update_time"`
 }
 
+// DatabaseRowData https://www.wolai.com/wolai/8dLzA1eucbL3S7nhNjfEqA
+type DatabaseRowData struct {
+	Data   map[string]PropertyValue `json:"data"`
+	PageId string                   `json:"page_id"`
+}
+
+// GetDatabaseResponse https://www.wolai.com/wolai/2kRSq4mVwxCUUcUhrgnQgp
+type GetDatabaseResponse struct {
+	ColumnOrder []string          `json:"columns_order"`
+	Rows        []DatabaseRowData `json:"rows"`
+}
+
 // LinkCover https://www.wolai.com/wolai/5PCC5XwEgPgBQ9ttTs9eLn
 type LinkCover struct {
 	Type string `json:"type"`
@@ -127,6 +148,21 @@ type PageSetting struct {
 	HasFloatingCatalog bool   `json:"has_floating_catalog"`
 	FontFamily         string `json:"font_family"`
 	LineSpacing        string `json:"line_leading"`
+}
+
+// PropertyFileInfo https://www.wolai.com/wolai/raB3oJr64UaaTiMt2PUARz
+type PropertyFileInfo struct {
+	DownloadURL string `json:"download_url"`
+	ExpiresIn   int    `json:"expires_in"`
+	IsImage     bool   `json:"is_image"`
+}
+
+// PropertyValue https://www.wolai.com/wolai/8dLzA1eucbL3S7nhNjfEqA
+type PropertyValue struct {
+	Type         PropertyType       `json:"type"`
+	Value        string             `json:"value"`
+	NumberFormat *NumberFormats     `json:"number_format"`
+	FileInfo     []PropertyFileInfo `json:"file_info"`
 }
 
 // RichText https://www.wolai.com/wolai/uPvBQMVskPHHhxzKQBzt2a
