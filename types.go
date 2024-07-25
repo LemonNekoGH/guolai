@@ -177,6 +177,18 @@ type RichText struct {
 	InlineCode    bool             `json:"inline_code"`
 	FrontColor    BlockFrontColors `json:"front_color"`
 	BackColor     BlockBackColors  `json:"back_color"`
+	// type "link"
+	Link *string `json:"link"`
+	// type "note" and "footnote"
+	Content []RichText `json:"content"`
+	// type "bi_link"
+	RefId   *string `json:"ref_id"`
+	BlockId *string `json:"block_id"`
+	// type "comment"
+	DiscussId *string `json:"discuss_id"`
+	CommentId *string `json:"comment_id"`
+	// type "mention_member"
+	UserId *string `json:"user_id"`
 }
 
 type WolaiResponse struct {
