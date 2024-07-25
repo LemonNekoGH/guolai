@@ -185,8 +185,8 @@ type RichText struct {
 	RefId   *string `json:"ref_id"`
 	BlockId *string `json:"block_id"`
 	// type "comment"
-	DiscussId *string `json:"discuss_id"`
-	CommentId *string `json:"comment_id"`
+	DiscussId *int `json:"discuss_id"`
+	CommentId *int `json:"comment_id"`
 	// type "mention_member"
 	UserId *string `json:"user_id"`
 }
