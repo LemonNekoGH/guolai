@@ -192,8 +192,10 @@ type RichText struct {
 }
 
 type WolaiResponse struct {
-	Data       any    `json:"data"`
-	Message    string `json:"message"`
-	ErrorCode  int    `json:"error_code"`
-	StatusCode int    `json:"status_code"`
+	Data       any     `json:"data"`
+	Message    string  `json:"message"`
+	ErrorCode  int     `json:"error_code"`
+	StatusCode int     `json:"status_code"`
+	HasMore    *bool   `json:"has_more"`
+	NextCursor *string `json:"next_cursor"`
 }
