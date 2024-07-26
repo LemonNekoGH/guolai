@@ -119,6 +119,7 @@ func (api *WolaiAPI) GetBlocks(blockId string) (*BlockApiResponse, error) {
 	return respData, nil
 }
 
+// GetBlockChildren TODO: pagination
 func (api *WolaiAPI) GetBlockChildren(blockId string) ([]BlockApiResponse, error) {
 	resp, err := makeRequest(
 		"/v1/blocks/"+blockId+"/children",

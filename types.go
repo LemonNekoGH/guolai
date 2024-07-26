@@ -58,7 +58,9 @@ type Block struct {
 	// type "callout"
 	MarqueeMode *bool `json:"marquee_mode"`
 	// type "image" | "video" | "audio"
-	Link *string `json:"link"`
+	Link       *string               `json:"link"`
+	Media      *BlockMedia           `json:"media"`
+	Dimensions *BlockMediaDimensions `json:"dimensions"`
 	// type "divider", no new fields
 	// type "progress_bar"
 	Progress   *int  `json:"progress"`
@@ -96,6 +98,26 @@ type BlockApiResponse struct {
 	CreatedAt int64  `json:"created_at"`
 	EditedBy  string `json:"edited_by"`
 	EditedAt  int64  `json:"edited_at"`
+}
+
+// BlockMedia did NOT appear in the official document.
+type BlockMedia struct {
+	// Type "internal" or "external", the internal image will expire in specific time, should print a warning message.
+	Type string `json:"type"`
+	// DownloadUrl if the type is "internal", this field will not be nil.
+	DownloadUrl *string `json:"download_url"`
+	// ExpiresIn if the type is "internal", this field will not be nil.
+	ExpiresIn *int `json:"expires_in"`
+	// Url if the type is "external", this field will not be nil.
+	Url *string `json:"url"`
+}
+
+// BlockMediaDimensions also NOT appear in the official document.
+type BlockMediaDimensions struct {
+	Width          *int `json:"width"`
+	Height         *int `json:"height"`
+	OriginalWidth  *int `json:"original_width"`
+	OriginalHeight *int `json:"original_height"`
 }
 
 // CodeSetting https://www.wolai.com/wolai/uyEE87wHMaSDpNUUSgKvhW
@@ -192,8 +214,10 @@ type RichText struct {
 }
 
 type WolaiResponse struct {
-	Data       any    `json:"data"`
-	Message    string `json:"message"`
-	ErrorCode  int    `json:"error_code"`
-	StatusCode int    `json:"status_code"`
+	Data       any     `json:"data"`
+	Message    string  `json:"message"`
+	ErrorCode  int     `json:"error_code"`
+	StatusCode int     `json:"status_code"`
+	HasMore    *bool   `json:"has_more"`
+	NextCursor *string `json:"next_cursor"`
 }
