@@ -1,5 +1,7 @@
 package guolai
 
+import "fmt"
+
 // CodeLanguage https://www.wolai.com/wolai/ikDbLea69NRHyTGEsgZwvs
 type CodeLanguage string
 
@@ -220,4 +222,13 @@ type WolaiResponse struct {
 	StatusCode int     `json:"status_code"`
 	HasMore    *bool   `json:"has_more"`
 	NextCursor *string `json:"next_cursor"`
+}
+
+type WolaiError struct {
+	Message string
+	Code    int
+}
+
+func (e WolaiError) Error() string {
+	return fmt.Sprintf("%d: %s", e.Code, e.Message)
 }
