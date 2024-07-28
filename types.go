@@ -80,6 +80,9 @@ type Block struct {
 	// type "embed"
 	OriginalLink *string `json:"original_link"`
 	EmbedLink    *string `json:"embed_link"`
+	// type "simple_table"
+	TableSetting *TableSetting `json:"table_setting"`
+	TableContent [][]RichText  `json:"table_content"`
 }
 
 // BlockApiResponse The field `data` in return type of `/blocks/{id}`.
@@ -213,6 +216,11 @@ type RichText struct {
 	CommentId *int `json:"comment_id"`
 	// type "mention_member"
 	UserId *string `json:"user_id"`
+}
+
+type TableSetting struct {
+	HasHeader    bool  `json:"has_header"`
+	ColumnWidths []int `json:"column_widths"`
 }
 
 type WolaiResponse struct {
