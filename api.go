@@ -3,7 +3,6 @@ package guolai
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
 	"io"
 	"net/http"
 )
@@ -94,7 +93,10 @@ func makeRequest(
 	}
 
 	if resp.StatusCode >= http.StatusBadRequest {
-		return respStruct, errors.New(respStruct.Message)
+		return respStruct, WolaiError{
+			Message: respStruct.Message,
+			Code:    respStruct.ErrorCode,
+		}
 	}
 
 	return respStruct, nil
