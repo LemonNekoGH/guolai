@@ -119,10 +119,10 @@ type BlockMedia struct {
 
 // BlockMediaDimensions also NOT appear in the official document.
 type BlockMediaDimensions struct {
-	Width          *int `json:"width"`
-	Height         *int `json:"height"`
-	OriginalWidth  *int `json:"original_width"`
-	OriginalHeight *int `json:"original_height"`
+	Width          *float64 `json:"width"`
+	Height         *float64 `json:"height"`
+	OriginalWidth  *float64 `json:"original_width"`
+	OriginalHeight *float64 `json:"original_height"`
 }
 
 // CodeSetting https://www.wolai.com/wolai/uyEE87wHMaSDpNUUSgKvhW
